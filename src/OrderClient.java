@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class OnlineStoreApp {
+public class OrderClient {
     private static Scanner scanner = new Scanner(System.in);
     
     public static void main(String[] args) {
@@ -31,10 +31,22 @@ public class OnlineStoreApp {
 
     private static int getUserOption() {
         int userOption;
+        String input;
         while (true) {
             System.out.print("Enter your option > ");
-            if (scanner.hasNextInt()) {
-                userOption = scanner.nextInt();
+            input = scanner.nextLine().trim();
+            
+            // Check is user left option field blank
+            if (input.isBlank() || input.isEmpty()) {
+                System.out.println("ERROR: No option entered. Try again.\n");
+                continue;
+            }
+            
+            // Check if user input is integer
+            if (input.matches("\\d+")) {
+                userOption = Integer.parseInt(input);
+                
+                // Check if user input is 1, 2, or 3
                 if (userOption >= 1 && userOption <= 3) {
                     break;
                 } else {
@@ -42,11 +54,8 @@ public class OnlineStoreApp {
                             + "again.\n");
                 }
             } else {
-                System.out.println("ERROR: Invalid option entered. Try again."
-                        + "\n");
-                scanner.next(); // This is required to remove the but where an 
-                                // invalid option stays is kept in the scanner 
-                                // buffer.
+                System.out.println("ERROR: Invalid option entered. Option must "
+                        + "be an integer.\n");
             }
         }
         return userOption;

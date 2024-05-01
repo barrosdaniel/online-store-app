@@ -1,8 +1,20 @@
+
+import java.rmi.RemoteException;
+
 public class BookOrder implements TaskI {
+    private String orderType = "book";
     private double TAX_RATE = 0.10;
     private int quantity;
     private int unitPrice;
     private double totalBill;
+    
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
+    }
 
     public double getTAX_RATE() {
         return TAX_RATE;
@@ -37,12 +49,14 @@ public class BookOrder implements TaskI {
     }
 
     @Override
-    public void getResult() {
+    public void executeTask() throws RemoteException {
         
     }
-    
+
     @Override
-    public void executeTask() {
+    public String getResult(int quantity, double price, int orderType) 
+            throws RemoteException {
         
+        return "";
     }
 }

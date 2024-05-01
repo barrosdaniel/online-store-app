@@ -1,7 +1,13 @@
 import java.util.Scanner;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class OrderClient {
     private static Scanner scanner;
+    private static final int PORT = 1099;
+    private static String serverMessage;
     
     public static void main(String[] args) {
         scanner = new Scanner(System.in);
@@ -79,6 +85,8 @@ public class OrderClient {
         price = getPrice(product);
         System.out.println("Quantity entered is: " + quantity);
         System.out.println("Price entered is: " + price);
+        
+        sendOrder(quantity, price, orderType);
     }
 
     private static int getQuantity(String product) {
@@ -153,5 +161,21 @@ public class OrderClient {
             }
         }
         return price;
+    }
+    
+    private static void sendOrder(int quantity, double price, int orderType) {
+        try {
+            Registry registry = LocateRegistry.getRegistry(PORT);
+            TaskI order = (TaskI) registry.lookup("order");
+            
+            System.out.println(">>>>> Sending order to server. >>>>>");
+            serverMessage = order.getResult(quantity, price, orderType);
+            System.out.println(">>>>> Receiving order results from server. "
+                    + ">>>>>");
+            System.out.println(serverMessage);
+        } catch (NotBoundException | RemoteException e) {
+            System.err.println("Client exception: " + e.toString());
+            e.printStackTrace();
+        }
     }
 }

@@ -3,5 +3,6 @@ import java.rmi.RemoteException;
 
 public interface TaskI extends Remote {
     public void executeTask() throws RemoteException;
-    public void getResult() throws RemoteException;
+    public String getResult(int quantity, double price, int orderType) 
+            throws RemoteException;
 }

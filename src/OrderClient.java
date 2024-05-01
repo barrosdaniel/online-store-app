@@ -64,25 +64,26 @@ public class OrderClient {
 
     private static void getOrderDetails(int orderType) {
         int quantity;
-        int price;
-        
-        System.out.println("\n***** NEW ORDER *****");
-        
-        quantity = getQuantity(orderType);
-        System.out.println("Quantity entered is: " + quantity);
-        // price = getPrice(orderType);
-    }
-
-    private static int getQuantity(int orderType) {
+        double price;
         String product = "";
-        String input;
-        int quantity;
         
         if (orderType == 1) {
             product = "book";
         } else if (orderType == 2) {
             product = "movie";
         }
+        
+        System.out.println("\n***** NEW ORDER *****");
+        
+        quantity = getQuantity(product);
+        price = getPrice(product);
+        System.out.println("Quantity entered is: " + quantity);
+        System.out.println("Price entered is: " + price);
+    }
+
+    private static int getQuantity(String product) {
+        String input;
+        int quantity;
         
         while (true) {
             System.out.print("Enter the number of " + product + "s > ");
@@ -95,21 +96,62 @@ public class OrderClient {
             }
             
             // Check if user input is integer
-            if (input.matches("\\d")) {
+            if (input.matches("-?\\d+")) {
                 quantity = Integer.parseInt(input);
                 
                 // Check if quantity is positive
                 if (quantity > 0) {
                     break;
                 } else {
-                    System.out.println("ERROR: Invalid quantity entered. "
-                            + "Quantity must be positive.\n");
+                    System.out.println("""
+                                       ERROR: Invalid quantity entered. Quantity
+                                       must be positive.
+                                       """);
                 }
             } else {
-                System.out.println("ERROR: Invalid quantity entered. Quantity "
-                        + "must be a positive integer.\n");
+                System.out.println("""
+                                   ERROR: Invalid quantity entered. Quantity 
+                                   must be a positive integer.
+                                   """);
             }
         }
         return quantity;
+    }
+
+    private static double getPrice(String product) {
+        String input;
+        double price;
+        
+        while (true) {
+            System.out.print("Enter the " + product + " price > ");
+            input = scanner.nextLine().trim();
+            
+            // Check is user left price field blank
+            if (input.isBlank() || input.isEmpty()) {
+                System.out.println("ERROR: No price entered. Try again.\n");
+                continue;
+            }
+            
+            // Check if user input is double or integer
+            if (input.matches("-?\\d+(\\.\\d+)?")) {
+                price = Double.parseDouble(input);
+                
+                // Check if price is positive
+                if (price > 0) {
+                    break;
+                } else {
+                    System.out.println("""
+                                       ERROR: Invalid price entered. Price must 
+                                       be positive.
+                                       """);
+                }
+            } else {
+                System.out.println("""
+                                   ERROR: Invalid price entered. Price must be 
+                                   a positive numeric value.
+                                   """);
+            }
+        }
+        return price;
     }
 }

@@ -13,7 +13,7 @@ public class OrderClient {
             if (userOption == 3) {
                 break;
             } else {
-                processOrder(userOption);
+                getOrderDetails(userOption);
             }
         }
     }
@@ -62,11 +62,54 @@ public class OrderClient {
         return userOption;
     }
 
-    private static void processOrder(int orderType) {
+    private static void getOrderDetails(int orderType) {
+        int quantity;
+        int price;
+        
+        System.out.println("\n***** NEW ORDER *****");
+        
+        quantity = getQuantity(orderType);
+        System.out.println("Quantity entered is: " + quantity);
+        // price = getPrice(orderType);
+    }
+
+    private static int getQuantity(int orderType) {
+        String product = "";
+        String input;
+        int quantity;
+        
         if (orderType == 1) {
-            System.out.println("Processing book order");
+            product = "book";
         } else if (orderType == 2) {
-            System.out.println("Processing movie order");
+            product = "movie";
         }
+        
+        while (true) {
+            System.out.print("Enter the number of " + product + "s > ");
+            input = scanner.nextLine().trim();
+            
+            // Check is user left quantity field blank
+            if (input.isBlank() || input.isEmpty()) {
+                System.out.println("ERROR: No quantity entered. Try again.\n");
+                continue;
+            }
+            
+            // Check if user input is integer
+            if (input.matches("\\d")) {
+                quantity = Integer.parseInt(input);
+                
+                // Check if quantity is positive
+                if (quantity > 0) {
+                    break;
+                } else {
+                    System.out.println("ERROR: Invalid quantity entered. "
+                            + "Quantity must be positive.\n");
+                }
+            } else {
+                System.out.println("ERROR: Invalid quantity entered. Quantity "
+                        + "must be a positive integer.\n");
+            }
+        }
+        return quantity;
     }
 }

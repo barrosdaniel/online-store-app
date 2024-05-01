@@ -1,18 +1,19 @@
 import java.util.Scanner;
 
 public class OrderClient {
-    private static Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner;
     
     public static void main(String[] args) {
+        scanner = new Scanner(System.in);
+        
         while (true) {
             printHeader();
             int userOption = getUserOption();
+
             if (userOption == 3) {
-                System.out.println("Thank you for using the Online Store App. "
-                        + "Goodbye.");
                 break;
             } else {
-                System.out.println("Selected option: " + userOption);
+                processOrder(userOption);
             }
         }
     }
@@ -59,5 +60,13 @@ public class OrderClient {
             }
         }
         return userOption;
+    }
+
+    private static void processOrder(int orderType) {
+        if (orderType == 1) {
+            System.out.println("Processing book order");
+        } else if (orderType == 2) {
+            System.out.println("Processing movie order");
+        }
     }
 }
